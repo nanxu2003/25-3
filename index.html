@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marron Studio Limited - 重塑數字生產力</title>
+    <meta name="description" content="Marron Studio Limited，領先的企業級雲服務與數字化轉型合作伙伴。">
+    
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 引入 Lucide 圖標庫 -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- 引入 Google Fonts (Inter 字體更適合現代商務) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- 配置 Tailwind 主題 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '"Noto Sans SC"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#f97316', // 活力橙
+                            600: '#ea580c',
+                            900: '#7c2d12',
+                        },
+                        ocean: {
+                            800: '#1e40af', // 深海藍
+                            900: '#0f172a', // 極深藍
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 20px 40px -15px rgba(0, 0, 0, 0.05)',
+                        'glow': '0 0 20px rgba(249, 115, 22, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* 基礎動畫類 */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 漸變文字 */
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #0f172a 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 導航欄模糊 */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* 圖片懸停縮放 */
+        .img-zoom-container {
+            overflow: hidden;
+        }
+        .img-zoom-container img {
+            transition: transform 0.6s ease;
+        }
+        .img-zoom-container:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body class="bg-white text-slate-600 antialiased selection:bg-brand-100 selection:text-brand-900">
+
+    <!-- 1. 頂部通告欄 (Top Notification) -->
+    <div class="bg-ocean-900 text-white text-xs py-2">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="bg-brand-500 text-white px-2 py-0.5 rounded text-[10px] font-bold">NEW</span>
+                <span>Marron Studio Limited 2025 全球開發者大會即將開啓報名</span>
+            </div>
+            <div class="hidden md:flex gap-4 opacity-80">
+                <a href="#" class="hover:text-white transition">投資者關係</a>
+                <a href="#" class="hover:text-white transition">媒體中心</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 現代風格導航欄 (Navbar) -->
+    <header class="sticky top-0 z-50 w-full border-b border-slate-100 glass-nav transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 bg-ocean-900 rounded-lg flex items-center justify-center text-white group-hover:bg-brand-500 transition-colors">
+                    <span class="font-bold text-lg">N</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-lg font-bold text-slate-900 leading-none">Marron Studio</span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-slate-600">
+                <a href="#products" class="hover:text-brand-600 transition-colors">產品與服務</a>
+                <a href="#solutions" class="hover:text-brand-600 transition-colors">解決方案</a>
+                <a href="#customers" class="hover:text-brand-600 transition-colors">客戶案例</a>
+                <a href="#pricing" class="hover:text-brand-600 transition-colors">價格方案</a>
+                <a href="#resources" class="hover:text-brand-600 transition-colors">資源中心</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="hidden lg:flex items-center gap-4">
+                <!-- 登錄鏈接已移除 -->
+                <a href="#contact" class="px-5 py-2.5 bg-ocean-900 hover:bg-slate-800 text-white text-sm font-semibold rounded-full transition-all shadow-lg shadow-slate-900/20">
+                    免費試用
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="lg:hidden p-2 text-slate-600" onclick="toggleMobileMenu()">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-white transform translate-x-full transition-transform duration-300 lg:hidden flex flex-col pt-24 px-6 gap-6">
+        <button class="absolute top-6 right-6 p-2" onclick="toggleMobileMenu()">
+            <i data-lucide="x" class="w-8 h-8 text-slate-400"></i>
+        </button>
+        <a href="#products" class="text-xl font-bold text-slate-900 py-2 border-b border-slate-100">產品與服務</a>
+        <a href="#solutions" class="text-xl font-bold text-slate-900 py-2 border-b border-slate-100">解決方案</a>
+        <a href="#pricing" class="text-xl font-bold text-slate-900 py-2 border-b border-slate-100">價格</a>
+        <a href="#contact" class="mt-4 px-6 py-4 bg-brand-500 text-white text-center rounded-xl font-bold">立即諮詢</a>
+    </div>
+
+    <!-- 3. 極簡主義 Hero 區域 -->
+    <section class="relative pt-20 pb-32 overflow-hidden bg-gradient-to-b from-white to-slate-50">
+        <!-- 裝飾背景 -->
+        <div class="absolute top-0 right-0 w-[50vw] h-[50vw] bg-gradient-to-bl from-brand-100/50 to-transparent rounded-full blur-3xl -z-10 translate-x-1/4 -translate-y-1/4"></div>
+        
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="lg:w-1/2 reveal-up active">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-xs font-semibold mb-8">
+                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                        全新 4.0 引擎已上線
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-8 tracking-tight">
+                        讓數字業務 <br>
+                        <span class="text-brand-500">超乎想象</span> 的簡單
+                    </h1>
+                    <p class="text-lg text-slate-500 mb-10 max-w-lg leading-relaxed">
+                        Marron Studio Limited 提供一站式企業級技術底座。從雲原生架構到 AI 智能決策，我們幫助您的企業在數字經濟浪潮中不僅生存，更要領跑。
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contact" class="px-8 py-4 bg-ocean-900 text-white font-bold rounded-xl hover:bg-slate-800 hover:shadow-xl hover:shadow-slate-900/10 transition-all flex items-center justify-center gap-2">
+                            開始構建
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" class="px-8 py-4 bg-white text-slate-700 font-bold border border-slate-200 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
+                            <i data-lucide="play-circle" class="w-5 h-5 text-slate-400"></i>
+                            觀看 2 分鐘演示
+                        </a>
+                    </div>
+                    <div class="mt-10 flex items-center gap-4 text-xs text-slate-400 font-medium">
+                        <div class="flex -space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-slate-200 border-2 border-white"></div>
+                            <div class="w-8 h-8 rounded-full bg-slate-300 border-2 border-white"></div>
+                            <div class="w-8 h-8 rounded-full bg-slate-400 border-2 border-white"></div>
+                        </div>
+                        <p>已有 5000+ 團隊接入使用</p>
+                    </div>
+                </div>
+                
+                <!-- 右側視覺圖：抽象的儀表盤/數據流 -->
+                <div class="lg:w-1/2 w-full relative reveal-up delay-200">
+                    <div class="relative z-10 bg-white rounded-2xl shadow-2xl shadow-slate-200/50 border border-slate-100 p-2 overflow-hidden transform rotate-1 hover:rotate-0 transition-transform duration-700">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop" alt="Dashboard Dashboard" class="w-full rounded-xl bg-slate-50">
+                        
+                        <!-- 懸浮卡片效果 -->
+                        <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-slate-50 animate-bounce delay-700 duration-[3000ms]">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
+                                    <i data-lucide="trending-up" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500">增長率</p>
+                                    <p class="text-lg font-bold text-slate-900">+128%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 信任背書 (Logo Wall) -->
+    <section class="py-10 border-y border-slate-100 bg-white">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-sm font-semibold text-slate-400 mb-8 uppercase tracking-widest">信賴我們的行業領袖</p>
+            <div class="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+                <div class="h-8 w-auto font-bold text-xl flex items-center gap-1"><i data-lucide="triangle" class="fill-current"></i> ACME Corp</div>
+                <div class="h-8 w-auto font-bold text-xl flex items-center gap-1"><i data-lucide="circle" class="fill-current"></i> GlobalBank</div>
+                <div class="h-8 w-auto font-bold text-xl flex items-center gap-1"><i data-lucide="square" class="fill-current"></i> NextTech</div>
+                <div class="h-8 w-auto font-bold text-xl flex items-center gap-1"><i data-lucide="hexagon" class="fill-current"></i> HealthPlus</div>
+                <div class="h-8 w-auto font-bold text-xl flex items-center gap-1"><i data-lucide="box" class="fill-current"></i> LogiChain</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 核心價值 (Value Proposition) -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal-up">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">爲什麼選擇 Marron Studio Limited</h2>
+                <p class="text-slate-500">拋棄陳舊的 IT 架構。我們提供面向未來的技術棧，確保您的業務在任何規模下都能保持敏捷與安全。</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-slate-100 group reveal-up">
+                    <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="zap" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">極致性能</h3>
+                    <p class="text-slate-500 leading-relaxed">基於 Rust 與 Go 重寫的底層核心，相比傳統架構響應速度提升 300%，從容應對億級流量洪峯。</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-slate-100 group reveal-up delay-100">
+                    <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield-check" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">金融級安全</h3>
+                    <p class="text-slate-500 leading-relaxed">全鏈路數據加密，符合 GDPR 與 ISO27001 標準。內置 AI 威脅感知系統，將風險阻斷在發生之前。</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-slate-100 group reveal-up delay-200">
+                    <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-600 mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="layers" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">無縫擴展</h3>
+                    <p class="text-slate-500 leading-relaxed">模塊化微服務架構，像搭積木一樣構建應用。支持混合雲部署，隨業務增長彈性伸縮資源。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. 產品與服務 (Tabs Interface) -->
+    <section id="products" class="py-24 bg-slate-50">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div class="max-w-xl">
+                    <span class="text-brand-600 font-bold text-sm tracking-wider uppercase mb-2 block">Our Expertise</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900">全棧技術生態體系</h2>
+                </div>
+                <div class="hidden md:block">
+                    <a href="#solutions" class="flex items-center gap-2 font-bold text-slate-900 hover:text-brand-600 transition-colors">
+                        瀏覽所有服務 <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div class="flex gap-2 overflow-x-auto pb-4 mb-8 border-b border-slate-200 no-scrollbar">
+                <button class="tab-btn active px-6 py-3 rounded-full text-sm font-bold whitespace-nowrap transition-all bg-slate-900 text-white" onclick="switchTab(0)">
+                    企業應用開發
+                </button>
+                <button class="tab-btn px-6 py-3 rounded-full text-sm font-bold text-slate-500 hover:bg-white hover:text-slate-900 whitespace-nowrap transition-all" onclick="switchTab(1)">
+                    雲架構與運維
+                </button>
+                <button class="tab-btn px-6 py-3 rounded-full text-sm font-bold text-slate-500 hover:bg-white hover:text-slate-900 whitespace-nowrap transition-all" onclick="switchTab(2)">
+                    大數據與 BI
+                </button>
+                <button class="tab-btn px-6 py-3 rounded-full text-sm font-bold text-slate-500 hover:bg-white hover:text-slate-900 whitespace-nowrap transition-all" onclick="switchTab(3)">
+                    人工智能解決方案
+                </button>
+            </div>
+
+            <!-- Tab Content Area -->
+            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl shadow-slate-200/50 min-h-[400px] flex items-center reveal-up">
+                <!-- Content 1 -->
+                <div class="tab-content w-full grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-900 mb-4">構建卓越的數字體驗</h3>
+                        <p class="text-slate-500 mb-6 leading-relaxed">
+                            無論是複雜的 B2B 管理系統，還是面向消費者的移動端 App，我們都追求極致的交互體驗與代碼質量。
+                        </p>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center gap-3 text-slate-700">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-500"></i>
+                                原生 iOS / Android 開發
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-700">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-500"></i>
+                                微信生態/小程序全案
+                            </li>
+                            <li class="flex items-center gap-3 text-slate-700">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-500"></i>
+                                高併發業務中臺系統
+                            </li>
+                        </ul>
+                        <a href="#" class="text-brand-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">瞭解開發流程 <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                    </div>
+                    <div class="rounded-2xl overflow-hidden shadow-lg">
+                        <img src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?q=80&w=2070&auto=format&fit=crop" class="w-full object-cover hover:scale-105 transition-transform duration-700" alt="Coding">
+                    </div>
+                </div>
+                <!-- Other contents hidden by JS logic, simulating structural readiness -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. 數據與成就 (Stats) -->
+    <section class="py-20 bg-ocean-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-white/10">
+                <div class="reveal-up">
+                    <div class="text-4xl md:text-5xl font-bold mb-2 font-mono">15<span class="text-brand-500">+</span></div>
+                    <div class="text-slate-400 text-sm">全球辦事處</div>
+                </div>
+                <div class="reveal-up delay-100">
+                    <div class="text-4xl md:text-5xl font-bold mb-2 font-mono">99.9<span class="text-sm align-top">%</span></div>
+                    <div class="text-slate-400 text-sm">服務可用性 SLA</div>
+                </div>
+                <div class="reveal-up delay-200">
+                    <div class="text-4xl md:text-5xl font-bold mb-2 font-mono">200<span class="text-brand-500">M+</span></div>
+                    <div class="text-slate-400 text-sm">日處理數據請求</div>
+                </div>
+                <div class="reveal-up delay-300">
+                    <div class="text-4xl md:text-5xl font-bold mb-2 font-mono">80<span class="text-brand-500">+</span></div>
+                    <div class="text-slate-400 text-sm">技術專利</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. 解決方案網格 (Solutions) -->
+    <section id="solutions" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16">行業垂直解決方案</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="group relative overflow-hidden rounded-2xl aspect-[4/3] cursor-pointer reveal-up">
+                    <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1965&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Finance">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8">
+                        <div class="w-10 h-10 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center text-white mb-4">
+                            <i data-lucide="banknote" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">智慧金融科技</h3>
+                        <p class="text-white/70 text-sm mb-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">高頻交易系統、風控模型與區塊鏈結算。</p>
+                        <span class="text-white text-sm font-bold flex items-center gap-2">查看詳情 <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group relative overflow-hidden rounded-2xl aspect-[4/3] cursor-pointer reveal-up delay-100">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Manufacturing">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8">
+                        <div class="w-10 h-10 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center text-white mb-4">
+                            <i data-lucide="factory" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">工業 4.0 物聯網</h3>
+                        <p class="text-white/70 text-sm mb-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">設備預測性維護、數字孿生工廠。</p>
+                        <span class="text-white text-sm font-bold flex items-center gap-2">查看詳情 <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group relative overflow-hidden rounded-2xl aspect-[4/3] cursor-pointer reveal-up delay-200">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Retail">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-8">
+                        <div class="w-10 h-10 bg-white/20 backdrop-blur rounded-lg flex items-center justify-center text-white mb-4">
+                            <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">新零售與電商</h3>
+                        <p class="text-white/70 text-sm mb-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">全渠道營銷、庫存統一管理、會員中臺。</p>
+                        <span class="text-white text-sm font-bold flex items-center gap-2">查看詳情 <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. 視頻/公司介紹 (Video Intro Placeholder) -->
+    <section class="py-20 bg-slate-50">
+        <div class="container mx-auto px-6">
+            <div class="rounded-3xl overflow-hidden relative shadow-2xl bg-black aspect-video md:aspect-[21/9] group cursor-pointer reveal-up">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-40 transition-opacity" alt="Team">
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform mb-4">
+                        <i data-lucide="play" class="w-8 h-8 text-brand-500 ml-1"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">瞭解 Marron Studio Limited 的文化</h3>
+                    <p class="text-white/80 mt-2">看看我們如何重新定義協作</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. 交付流程 (Workflow) -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16">簡單的五步流程</h2>
+            <div class="relative">
+                <!-- Line -->
+                <div class="hidden md:block absolute top-8 left-0 w-full h-1 bg-slate-100 -z-10"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+                    <div class="text-center group reveal-up">
+                        <div class="w-16 h-16 mx-auto bg-white border-4 border-slate-100 rounded-full flex items-center justify-center text-xl font-bold text-slate-400 group-hover:border-brand-500 group-hover:text-brand-500 transition-colors mb-6">01</div>
+                        <h4 class="font-bold text-slate-900 mb-2">需求分析</h4>
+                        <p class="text-sm text-slate-500">深入理解業務痛點</p>
+                    </div>
+                    <div class="text-center group reveal-up delay-100">
+                        <div class="w-16 h-16 mx-auto bg-white border-4 border-slate-100 rounded-full flex items-center justify-center text-xl font-bold text-slate-400 group-hover:border-brand-500 group-hover:text-brand-500 transition-colors mb-6">02</div>
+                        <h4 class="font-bold text-slate-900 mb-2">方案設計</h4>
+                        <p class="text-sm text-slate-500">產出原型與架構圖</p>
+                    </div>
+                    <div class="text-center group reveal-up delay-200">
+                        <div class="w-16 h-16 mx-auto bg-white border-4 border-slate-100 rounded-full flex items-center justify-center text-xl font-bold text-slate-400 group-hover:border-brand-500 group-hover:text-brand-500 transition-colors mb-6">03</div>
+                        <h4 class="font-bold text-slate-900 mb-2">敏捷開發</h4>
+                        <p class="text-sm text-slate-500">雙週迭代，透明可控</p>
+                    </div>
+                    <div class="text-center group reveal-up delay-300">
+                        <div class="w-16 h-16 mx-auto bg-white border-4 border-slate-100 rounded-full flex items-center justify-center text-xl font-bold text-slate-400 group-hover:border-brand-500 group-hover:text-brand-500 transition-colors mb-6">04</div>
+                        <h4 class="font-bold text-slate-900 mb-2">測試部署</h4>
+                        <p class="text-sm text-slate-500">自動化測試與上線</p>
+                    </div>
+                    <div class="text-center group reveal-up delay-400">
+                        <div class="w-16 h-16 mx-auto bg-white border-4 border-slate-100 rounded-full flex items-center justify-center text-xl font-bold text-slate-400 group-hover:border-brand-500 group-hover:text-brand-500 transition-colors mb-6">05</div>
+                        <h4 class="font-bold text-slate-900 mb-2">長期維護</h4>
+                        <p class="text-sm text-slate-500">SLA 保障與迭代</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. 價格方案 (Pricing) -->
+    <section id="pricing" class="py-24 bg-slate-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">靈活的價格方案</h2>
+                <p class="text-slate-500">無論您是初創公司還是大型企業，我們都有適合您的合作模式。</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 items-start">
+                <!-- Basic -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all reveal-up">
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">按需開發</h3>
+                    <p class="text-sm text-slate-500 mb-6">適合單一項目或短期需求</p>
+                    <div class="text-4xl font-bold text-slate-900 mb-8">
+                        <span class="text-2xl align-top">¥</span>30k<span class="text-sm text-slate-400 font-normal">/起</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-sm text-slate-600">
+                        <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> 標準交付流程</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> 6個月免費維護</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> 源碼交付</li>
+                    </ul>
+                    <a href="#" class="block w-full py-3 text-center border-2 border-slate-100 rounded-xl font-bold text-slate-600 hover:border-slate-900 hover:text-slate-900 transition-all">選擇方案</a>
+                </div>
+
+                <!-- Pro (Highlighted) -->
+                <div class="bg-slate-900 p-8 rounded-3xl shadow-xl shadow-slate-900/20 transform md:-translate-y-4 relative reveal-up delay-100">
+                    <div class="absolute top-0 right-0 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl">POPULAR</div>
+                    <h3 class="text-xl font-bold text-white mb-2">年度訂閱</h3>
+                    <p class="text-sm text-slate-400 mb-6">適合持續迭代的產品</p>
+                    <div class="text-4xl font-bold text-white mb-8">
+                        <span class="text-2xl align-top">¥</span>12k<span class="text-sm text-slate-400 font-normal">/月</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 text-sm text-slate-300">
+                        <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-500"></i> 專屬 3 人開發小組</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-500"></i> 無限次需求變更</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-500"></i> 優先技術支持</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-500"></i> 服務器代管</li>
+                    </ul>
+                    <a href="#" class="block w-full py-3 text-center bg-brand-500 rounded-xl font-bold text-white hover:bg-brand-600 transition-all">聯繫銷售</a>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all reveal-up delay-200">
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">企業諮詢</h3>
+                    <p class="text-sm text-slate-500 mb-6">複雜架構與數字化轉型</p>
+                    <div class="text-4xl font-bold text-slate-900 mb-8">
+                        定製報價
+                    </div>
+                    <ul class="space-y-4 mb-8 text-sm text-slate-600">
+                        <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> 架構師一對一諮詢</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> 私有化部署</li>
+                        <li class="flex gap-3"><i data-lucide="check" class="w-5 h-5 text-green-500"></i> 駐場開發支持</li>
+                    </ul>
+                    <a href="#" class="block w-full py-3 text-center border-2 border-slate-100 rounded-xl font-bold text-slate-600 hover:border-slate-900 hover:text-slate-900 transition-all">諮詢專家</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. 博客/動態 (Blog) -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-end mb-12">
+                <h2 class="text-3xl font-bold text-slate-900">最新技術洞察</h2>
+                <a href="#" class="text-brand-600 font-bold text-sm hidden md:block">查看更多文章</a>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <article class="group cursor-pointer reveal-up">
+                    <div class="rounded-2xl overflow-hidden mb-4 aspect-video">
+                        <img src="https://images.unsplash.com/photo-1661956602116-aa6865609028?q=80&w=1664&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Blog 1">
+                    </div>
+                    <div class="text-xs text-brand-600 font-bold mb-2 uppercase">Tech • 2025-05-12</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">Serverless 架構在大型電商系統中的實踐</h3>
+                    <p class="text-slate-500 text-sm line-clamp-2">探討如何利用無服務器架構降低運維成本，並提升系統應對突發流量的能力。</p>
+                </article>
+
+                <article class="group cursor-pointer reveal-up delay-100">
+                    <div class="rounded-2xl overflow-hidden mb-4 aspect-video">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Blog 2">
+                    </div>
+                    <div class="text-xs text-brand-600 font-bold mb-2 uppercase">AI • 2025-05-08</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">2025 企業級 AI 應用落地的五大趨勢</h3>
+                    <p class="text-slate-500 text-sm line-clamp-2">從 RAG 到 Agent，大模型技術正在重塑企業內部知識庫與客服系統。</p>
+                </article>
+
+                <article class="group cursor-pointer reveal-up delay-200">
+                    <div class="rounded-2xl overflow-hidden mb-4 aspect-video">
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Blog 3">
+                    </div>
+                    <div class="text-xs text-brand-600 font-bold mb-2 uppercase">News • 2025-04-20</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">Marron Studio Limited 榮獲“年度最佳數字化服務商”</h3>
+                    <p class="text-slate-500 text-sm line-clamp-2">感謝客戶與行業的認可，我們將繼續致力於爲企業提供卓越的技術服務。</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- 13. 常見問題 (FAQ) -->
+    <section class="py-24 bg-slate-50">
+        <div class="container mx-auto px-6 max-w-3xl">
+            <h2 class="text-3xl font-bold text-center text-slate-900 mb-12">常見問題</h2>
+            <div class="space-y-4">
+                <div class="bg-white rounded-2xl p-6 shadow-sm cursor-pointer group" onclick="this.classList.toggle('active')">
+                    <div class="flex justify-between items-center font-bold text-slate-900">
+                        <span>項目啓動需要多長時間？</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-[.active]:rotate-180 transition-transform"></i>
+                    </div>
+                    <div class="hidden group-[.active]:block mt-4 text-slate-500 text-sm leading-relaxed animate-fade-in">
+                        通常在合同簽署後的 3 個工作日內，我們會組建專屬項目組並召開啓動會議（Kick-off Meeting），隨後立即進入需求調研階段。
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-6 shadow-sm cursor-pointer group" onclick="this.classList.toggle('active')">
+                    <div class="flex justify-between items-center font-bold text-slate-900">
+                        <span>支持哪些付款方式？</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-[.active]:rotate-180 transition-transform"></i>
+                    </div>
+                    <div class="hidden group-[.active]:block mt-4 text-slate-500 text-sm leading-relaxed animate-fade-in">
+                        我們支持對公轉賬及主要的企業信用卡。通常項目按階段分期付款（如：啓動款、設計確認款、上線驗收款）。
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm cursor-pointer group" onclick="this.classList.toggle('active')">
+                    <div class="flex justify-between items-center font-bold text-slate-900">
+                        <span>數據安全如何保障？</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400 group-[.active]:rotate-180 transition-transform"></i>
+                    </div>
+                    <div class="hidden group-[.active]:block mt-4 text-slate-500 text-sm leading-relaxed animate-fade-in">
+                        我們會簽署嚴格的 NDA（保密協議）。所有開發數據均存儲在私有加密雲端，未經授權任何人員無法訪問生產環境數據。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 14. 招聘 (Careers) - 簡單橫幅 -->
+    <section class="py-16 bg-white border-y border-slate-100">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">加入我們，共創未來</h3>
+                <p class="text-slate-500">正在尋找：高級前端工程師、Go 後端開發、UI 設計師</p>
+            </div>
+            <a href="#" class="px-8 py-3 bg-slate-100 text-slate-900 font-bold rounded-full hover:bg-slate-200 transition-colors whitespace-nowrap">
+                查看開放職位
+            </a>
+        </div>
+    </section>
+
+    <!-- 15. CTA 呼籲行動 (Call to Action) -->
+    <section class="py-24 bg-white relative overflow-hidden" id="contact">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="bg-gradient-to-r from-ocean-900 to-ocean-800 rounded-[2.5rem] p-12 md:p-24 text-center shadow-2xl shadow-blue-900/30 overflow-hidden relative">
+                <!-- 裝飾圓環 -->
+                <div class="absolute top-0 left-0 w-64 h-64 border-[20px] border-white/5 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                <div class="absolute bottom-0 right-0 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
+
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 relative z-10">準備好升級您的業務了嗎？</h2>
+                <p class="text-blue-100 text-lg mb-10 max-w-2xl mx-auto relative z-10">今天就聯繫我們，獲取免費的項目診斷報告與解決方案。</p>
+                
+                <form class="max-w-md mx-auto relative z-10 flex flex-col gap-4" onsubmit="event.preventDefault(); alert('提交成功！我們會盡快聯繫您。')">
+                    <div class="relative">
+                        <i data-lucide="mail" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5"></i>
+                        <input type="email" placeholder="您的工作郵箱" class="w-full pl-12 pr-4 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-blue-200/50 focus:outline-none focus:bg-white/20 focus:border-white transition-all backdrop-blur-sm">
+                    </div>
+                    <button type="submit" class="w-full py-4 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-xl shadow-lg shadow-brand-500/30 transition-all transform hover:scale-[1.02]">
+                        立即開始
+                    </button>
+                    <p class="text-xs text-blue-200/60 mt-2">點擊即代表您同意我們的隱私政策</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 16. 頁腳 (Footer) -->
+    <footer class="bg-slate-50 pt-20 pb-10 text-sm border-t border-slate-200">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
+                <div class="col-span-2">
+                    <a href="#" class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-ocean-900 rounded-lg flex items-center justify-center text-white">
+                            <span class="font-bold text-lg">N</span>
+                        </div>
+                        <span class="text-lg font-bold text-slate-900">Marron Studio Limited</span>
+                    </a>
+                    <p class="text-slate-500 mb-6 max-w-xs leading-relaxed">
+                        Rm 2A 17/F GLENEALY TWR 1 GLENEALY<br>
+                        我們致力於通過技術創新，爲企業創造真實可見的商業價值。
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-brand-500 hover:border-brand-500 transition-all"><i data-lucide="twitter" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-brand-500 hover:border-brand-500 transition-all"><i data-lucide="github" class="w-4 h-4"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-brand-500 hover:border-brand-500 transition-all"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-6">產品</h4>
+                    <ul class="space-y-4 text-slate-500">
+                        <li><a href="#" class="hover:text-brand-600 transition-colors">企業中臺</a></li>
+                        <li><a href="#" class="hover:text-brand-600 transition-colors">移動開發</a></li>
+                        <li><a href="#" class="hover:text-brand-600 transition-colors">DevOps 平臺</a></li>
+                        <li><a href="#" class="hover:text-brand-600 transition-colors">數據分析 BI</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-6">公司</h4>
+                    <ul class="space-y-4 text-slate-500">
+                        <li><a href="#" class="hover:text-brand-600 transition-colors">關於我們</a></li>
+                        <li><a href="#" class="hover:text-brand-600 transition-colors">加入我們</a></li>
+                        <li><a href="#" class="hover:text-brand-600 transition-colors">合作伙伴</a></li>
+                        <li><a href="#" class="hover:text-brand-600 transition-colors">新聞動態</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-6">聯繫</h4>
+                    <ul class="space-y-4 text-slate-500">
+                        <li><a href="#" class="hover:text-brand-600 transition-colors">幫助中心</a></li>
+                        <li><a href="#" class="hover:text-brand-600 transition-colors">商務諮詢</a></li>
+                        <li class="font-medium text-slate-900">contact@marronstudio.bond</li>
+                        <li class="font-medium text-slate-900">54594759</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+                <p>&copy; 2025 Marron Studio. 保留所有權利。</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-slate-600">隱私政策</a>
+                    <a href="#" class="hover:text-slate-600">服務條款</a>
+                    <a href="#" class="hover:text-slate-600">Cookie 設置</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // 初始化圖標
+        lucide.createIcons();
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('translate-x-full');
+        }
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-sm');
+                nav.classList.replace('h-20', 'h-16');
+            } else {
+                nav.classList.remove('shadow-sm');
+                nav.classList.replace('h-16', 'h-20');
+            }
+        });
+
+        // Tabs Logic
+        function switchTab(index) {
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach((btn, i) => {
+                if (i === index) {
+                    btn.classList.add('bg-slate-900', 'text-white');
+                    btn.classList.remove('text-slate-500', 'hover:bg-white', 'hover:text-slate-900');
+                } else {
+                    btn.classList.remove('bg-slate-900', 'text-white');
+                    btn.classList.add('text-slate-500', 'hover:bg-white', 'hover:text-slate-900');
+                }
+            });
+            // 實際項目中這裏會切換 .tab-content 的顯示隱藏
+        }
+
+        // Reveal Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.reveal-up').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
